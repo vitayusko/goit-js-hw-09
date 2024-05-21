@@ -30,9 +30,20 @@ function handleSubmit(event) {
 
 function handleInput(event) {
     const formData = {};
+    let allFieldsFilled = true;
+
     textareas.forEach(textarea => {
         formData[textarea.name] = textarea.value;
+        if (!textarea.value.trim()) {
+            allFieldsFilled = false;
+        }
     });
+
+    if (!allFieldsFilled) {
+        alert('Пожалуйста, заполните все поля.');
+        return; // Прекращаем выполнение функции, если есть пустые поля
+    }
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
@@ -44,3 +55,4 @@ function populateTextarea() {
         if (message) form.elements.message.value = message;
     }
 }
+
