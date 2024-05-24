@@ -1,8 +1,6 @@
 
 //  скрипт, який буде зберігати значення полів у локальне сховище, коли користувач щось друкує.
 
-
-
 const STORAGE_KEY = "feedback-form";
 
 const form = document.querySelector(".feedback-form");
@@ -16,8 +14,14 @@ function handleSubmit(event) {
     event.preventDefault();
 
     const { email, message } = event.target.elements;
-    const emailValue = email.value;
-    const messageValue = message.value;
+    const emailValue = email.value.trim();
+    const messageValue = message.value.trim();
+
+    if (!emailValue || !messageValue) {
+        alert('Пожалуйста, заполните все поля.');
+        return; 
+        
+    }
 
     console.log({
         email: emailValue,
@@ -30,19 +34,10 @@ function handleSubmit(event) {
 
 function handleInput(event) {
     const formData = {};
-    let allFieldsFilled = true;
 
     textareas.forEach(textarea => {
         formData[textarea.name] = textarea.value;
-        if (!textarea.value.trim()) {
-            allFieldsFilled = false;
-        }
     });
-
-    if (!allFieldsFilled) {
-        alert('Пожалуйста, заполните все поля.');
-        return; // Прекращаем выполнение функции, если есть пустые поля
-    }
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
@@ -55,4 +50,3 @@ function populateTextarea() {
         if (message) form.elements.message.value = message;
     }
 }
-
